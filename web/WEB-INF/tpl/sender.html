@@ -1,0 +1,61 @@
+<#include "common/_layout.html"/> <@layout>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">发送测试短信</h3>
+	</div>
+	<div class="panel-body">
+		<form action="/sender/sms" method="post">
+			<div class="form-group">
+				<label for="name">team：</label> <input type="text" name="team"
+					class="form-control" value="qinxiaohui_team" />
+			</div>
+			<div class="form-group">
+				<label for="email">内容：</label> <input type="text" name="content"
+					class="form-control" value="测试短信内容" />
+			</div>
+			<button type="submit" class="btn btn-primary">发送</button>
+		</form>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">发送测试邮件</h3>
+	</div>
+	<div class="panel-body">
+		<form action="/sender/mail" method="post">
+			<div class="form-group">
+				<label for="name">team：</label> <input type="text" name="team"
+					class="form-control" value="qinxiaohui_team" />
+			</div>
+			<div class="form-group">
+				<label for="email">标题：</label> <input type="text" name="subject"
+					class="form-control" value="测试邮件标题" />
+			</div>
+			<div class="form-group">
+				<label for="email">内容：</label> <input type="text" name="content"
+					class="form-control" value="测试邮件内容" />
+			</div>
+			<button type="submit" class="btn btn-primary">发送</button>
+		</form>
+	</div>
+</div>
+
+<div class="panel panel-warning">
+	<div class="panel-heading">
+		<h3 class="panel-title">说明：</h3>
+	</div>
+	<div class="panel-body">
+		<strong>发邮件的接口：/sender/mail</strong><br>
+		<strong>发短信的接口：/sender/sms</strong><br><br>
+		<div>
+			参数1：content，内容，短信内容或者邮件内容<br>
+			参数2：team，要发的组，多个组之间逗号分隔<br>
+			参数3：user，不想发给team，只想发给单个人，就不要传入team参数了，使用user，多个人之间逗号分隔<br>
+			参数4：subject，邮件标题，发邮件的时候用<br>
+		</div>
+	</div>
+</div>
+
+</@layout>

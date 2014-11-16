@@ -1,0 +1,83 @@
+<#include "../common/_layout.html"/> <@layout>
+
+<div class="form-inline" role="form">
+	<div class="form-group">
+		<input type="text" value="${query!}" class="form-control" id="query"
+			placeholder="name or cnname">
+	</div>
+	<button type="button" onclick="query_user();" class="btn btn-primary">搜索</button>
+	<#if (iamcreator==1)>
+	<input type="checkbox" id="iamcreator" checked="checked">
+	<#else>
+	<input type="checkbox" id="iamcreator">
+	</#if>
+	<span>只显示我创建的</span>
+	<div class="pull-right">
+		<a class="btn btn-primary" href="/user/create">创建新用户</a>
+	</div>
+</div>
+
+<div class="users mt20">
+	<table class="table table-striped table-bordered">
+		<thead>
+			<tr>
+				<th>用户名</th>
+				<th>中文名</th>
+				<th>邮箱</th>
+				<th>手机</th>
+				<th>操作</th>
+				<#if ((me.role)>0)>
+				<th>管理员</th>
+				</#if>
+			</tr>
+		</thead>
+		<tbody>
+			<#list userPage.getList() as x>
+			<tr>
+				<td>${x.name}</td>
+				<td>${x.cnname}</td>
+				<td>${x.email}</td>
+				<td>${x.phone}</td>
+				<td>
+					<a href="javascript:user_detail('${x.id}');"><span class="glyphicon glyphicon-search"></span></a>
+					<#if ((me.role)>0 || x.creator==(me.id))>
+					<a href="/user/edit?id=${x.id}"><span class="glyphicon glyphicon-edit"></span></a>
+					<a href="javascript:delete_user('${x.id}');"><span class="glyphicon glyphicon-remove"></span></a>
+					</#if>
+				</td>
+				<#if ((me.role)>0)>
+				<td>
+					<#if ((x.role)>0)>
+					<input type="checkbox" checked="checked" onclick="set_role('${x.id}', this);">
+					<#else>
+					<input type="checkbox" onclick="set_role('${x.id}', this);">
+					</#if>
+				</td>
+				</#if>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../common/_paginate.html" /> <@paginate
+	currentPage=userPage.pageNumber totalPage=userPage.totalPage
+	actionUrl="/user/all/" urlParas="?q="+query+"&iamcreator="+iamcreator/>
+</div>
+
+<div id="user_detail_div" style="display: none; padding: 10px; width: 450px; height: 240px;"></div>
+
+<script>
+	$(function() {
+		$("#query").keypress(function(e) {
+			var key = e.which;
+			if (key == 13) {
+				query_user();
+			}
+		});
+		
+		$("#iamcreator").click(function() {
+			query_user();
+		});
+	});
+</script>
+
+</@layout>

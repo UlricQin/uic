@@ -1,0 +1,31 @@
+<#include "../common/_layout.html"/> <@layout>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">创建新用户</h3>
+	</div>
+	<div class="panel-body">
+		<div class="form-group">
+			<label for="name">登录名（a-zA-Z0-9_-）：</label> <input type="text"
+				id="name" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label for="name">中文名（可以附带上部门、工位号之类的做详细区分）：</label> <input
+				type="text" id="cnname" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label for="email">邮箱：</label> <input type="text" id="email"
+				class="form-control" />
+		</div>
+		<div class="form-group">
+			<label for="email">手机号：</label> <input type="text" id="phone"
+				class="form-control" />
+		</div>
+		<button type="button" class="btn btn-primary"
+			onclick="create_user();">创建</button>
+		<a href="/user/all" class="btn btn-default">取消</a>
+		<span class="orange">默认密码是：abc</span>
+	</div>
+</div>
+
+</@layout>

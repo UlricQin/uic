@@ -1,0 +1,55 @@
+<#include "../common/_layout.html"/> <@layout>
+
+<div class="form-inline" role="form">
+	<div class="form-group">
+		<input type="text" value="${query!}" class="form-control" id="query"
+			placeholder="name">
+	</div>
+	<button type="button" onclick="query_team();" class="btn btn-primary">搜索</button>
+	<div class="pull-right">
+		<a class="btn btn-primary" href="/team/create">创建Team</a>
+	</div>
+</div>
+
+
+<div class="thin-border mt20 groups mb20" style="padding: 20px;">
+
+	<#list page.getList() as x>
+	<div class="group">
+		<p class="group-title">
+			<strong>${(x.name)!}</strong> <span class="gray"> -
+				${(x.resume)!} </span> <span class="group-title-btn">
+				<a href="/team/edit?id=${(x.id)}" class="btn btn-default btn-xs">编辑</a>
+				<button class="btn btn-default btn-xs" type="button"
+					onclick="delete_team('${(x.id)}');">删除</button>
+			</span>
+		</p>
+		<p class="group-member">
+			<strong>成员包括</strong>： 
+			<#list (x.getUsers()) as u>
+			<code>${u.name}</code>
+			</#list>
+		</p>
+	</div>
+	<hr />
+	</#list>
+	
+	<#include "../common/_paginate.html" /> <@paginate
+	currentPage=page.pageNumber totalPage=page.totalPage
+	actionUrl="/team/all/" urlParas="?q="+query/>
+	<div class="gray">数据按照组名排序，故而最新添加的不一定在最上面：）</div>
+
+</div>
+
+<script>
+	$(function() {
+		$("#query").keypress(function(e) {
+			var key = e.which;
+			if (key == 13) {
+				query_team();
+			}
+		});
+	});
+</script>
+
+</@layout>

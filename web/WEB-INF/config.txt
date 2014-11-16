@@ -1,0 +1,7 @@
+jdbcUrl = jdbc:mysql://127.0.0.1/uic?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+user = root
+password =
+devMode = false
+memcacheAddrs = 127.0.0.1:11211
+canRegister = false
+token = 3e0fij5tg8uh6

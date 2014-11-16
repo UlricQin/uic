@@ -1,0 +1,5 @@
+*.class
+*.swp
+*.swo
+/var
+/web/WEB-INF/classes
