@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
@@ -53,10 +55,15 @@ public class UserController extends Controller {
 	// 自己更新自己
 	public void update() {
 		String cnname = getPara("cnname", "");
+		cnname = Jsoup.clean(cnname, Whitelist.none());
 		String email = getPara("email", "");
+		email = Jsoup.clean(email, Whitelist.none());
 		String phone = getPara("phone", "");
+		phone = Jsoup.clean(phone, Whitelist.none());
 		String im = getPara("im", "");
+		im = Jsoup.clean(im, Whitelist.none());
 		String qq = getPara("qq", "");
+		qq = Jsoup.clean(qq, Whitelist.none());
 
 		User me = getAttr("me");
 		boolean success = me.updateProfile(cnname, email, phone, im, qq);
@@ -87,10 +94,15 @@ public class UserController extends Controller {
 
 	private void editPost() {
 		String cnname = getPara("cnname", "");
+		cnname = Jsoup.clean(cnname, Whitelist.none());
 		String email = getPara("email", "");
+		email = Jsoup.clean(email, Whitelist.none());
 		String phone = getPara("phone", "");
+		phone = Jsoup.clean(phone, Whitelist.none());
 		String im = getPara("im", "");
+		im = Jsoup.clean(im, Whitelist.none());
 		String qq = getPara("qq", "");
+		qq = Jsoup.clean(qq, Whitelist.none());
 
 		User toEdit = getAttr("targetUser");
 
@@ -170,6 +182,7 @@ public class UserController extends Controller {
 
 	private void createPost() {
 		String name = getPara("name", "");
+		name = Jsoup.clean(name, Whitelist.none());
 		if (StringKit.isBlank(name)) {
 			renderJson("msg", "name is blank");
 			return;
@@ -186,9 +199,13 @@ public class UserController extends Controller {
 		}
 
 		String cnname = getPara("cnname", "");
+		cnname = Jsoup.clean(cnname, Whitelist.none());
 		String email = getPara("email", "");
+		email = Jsoup.clean(email, Whitelist.none());
 		String phone = getPara("phone", "");
+		phone = Jsoup.clean(phone, Whitelist.none());
 		String passwd = getPara("password", "");
+		
 		User me = getAttr("me");
 
 		User newUser = new User();

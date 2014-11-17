@@ -104,7 +104,7 @@ public class Config extends JFinalConfig {
 	}
 
 	public static void main(String[] args) {
-		JFinal.start("web", 8087, "/", 5);
+		JFinal.start("web", 8077, "/", 5);
 	}
 
 }
