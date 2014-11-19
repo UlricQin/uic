@@ -156,6 +156,7 @@ public class UserController extends Controller {
 		setAttr("isUserPage", true);
 
 		String query = getPara("q", "");
+		query = Jsoup.clean(query, Whitelist.none());
 		int iAmCreator = getParaToInt("iamcreator", 0);
 		int pageNo = getParaToInt(0, 1);
 		User me = getAttr("me");
@@ -302,6 +303,7 @@ public class UserController extends Controller {
 	
 	public void query() {
 		String query = getPara("query", "");
+		query = Jsoup.clean(query, Whitelist.none());
 		int limit = getParaToInt("limit", 10);
 		renderJson("users", User.dao.query(query, limit));
 	}

@@ -1,5 +1,8 @@
 package com.ulricqin.uic.controller;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import com.jfinal.aop.Before;
 import com.jfinal.aop.ClearInterceptor;
 import com.jfinal.core.Controller;
@@ -134,6 +137,7 @@ public class TeamController extends Controller {
 
 	private void createPost() {
 		String name = getPara("name", "");
+		name = Jsoup.clean(name, Whitelist.none());
 		if (StringKit.isBlank(name)) {
 			throw new RenderJsonMsgException("name is blank");
 		}
@@ -148,6 +152,7 @@ public class TeamController extends Controller {
 		}
 
 		String resume = getPara("resume", "");
+		resume = Jsoup.clean(resume, Whitelist.none());
 		User me = getAttr("me");
 		
 		Team t = new Team();
@@ -159,6 +164,7 @@ public class TeamController extends Controller {
 		}
 		
 		String userIds = getPara("users", "");
+		userIds = Jsoup.clean(userIds, Whitelist.none());
 		t.addUsers(userIds);
 
 		renderJson("msg", "");
@@ -201,7 +207,9 @@ public class TeamController extends Controller {
 	private void editPost() {
 		Team toEdit = getAttr("targetTeam");
 		String resume = getPara("resume", "");
+		resume = Jsoup.clean(resume, Whitelist.none());
 		String userIds = getPara("users", "");
+		userIds = Jsoup.clean(userIds, Whitelist.none());
 		
 		toEdit.up(resume, userIds);
 		renderJson("msg", "");
