@@ -285,7 +285,7 @@ public class UserController extends Controller {
 		if (!varDir.exists()) {
 			varDir.mkdir();
 		}
-		File imgFile = new File("var" + File.pathSeparator + u.getLong("id")+".png");
+		File imgFile = new File("var" + File.separator + u.getLong("id")+".png");
 		ZxingKit.encode("BEGIN:VCARD\nVERSION:3.0\nFN:" + u.getStr("cnname")
 				+ "\nTEL;WORK;VOICE:" + u.getStr("phone")
 				+ "\nEMAIL;PREF;INTERNET:" + u.getStr("email")
