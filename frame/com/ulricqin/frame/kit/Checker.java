@@ -10,7 +10,7 @@ public class Checker {
 			throw new IllegalArgumentException("argument is blank");
 		}
 		
-		Pattern pattern = Pattern.compile("[a-zA-Z0-9\\-\\_]+");
+		Pattern pattern = Pattern.compile("[a-z0-9\\_]+");
 		Matcher matcher = pattern.matcher(name);
 		return matcher.matches();
 	}
