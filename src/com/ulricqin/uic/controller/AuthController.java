@@ -166,7 +166,7 @@ public class AuthController extends Controller {
 		}
 
 		if (!Checker.isIdentifier(name)) {
-			throw new RenderJsonMsgException("name is invalid. use a-zA-Z0-9-_");
+			throw new RenderJsonMsgException("name is invalid. use a-z0-9_");
 		}
 
 		Long id = UserService.getIdByName(name);
