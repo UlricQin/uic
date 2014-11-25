@@ -165,7 +165,7 @@ public class AuthController extends Controller {
 			throw new RenderJsonMsgException("repeat_password != password");
 		}
 
-		if (!Checker.isIdentifier(name)) {
+		if (!Checker.isUserNameValid(name)) {
 			throw new RenderJsonMsgException("name is invalid. use a-z0-9_");
 		}
 
