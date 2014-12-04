@@ -18,7 +18,7 @@
 			<div style="margin: 0 auto; max-width: 400px;">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Sign in (default password: <span class="orange">abc</span>)</h3>
+						<h3 class="panel-title">Sign in <#if (ldapEnabled)>(use LDAP account)</#if></h3>
 					</div>
 					<div class="panel-body">
 						<div class="form-sign" role="form">
@@ -31,10 +31,13 @@
 									class="form-control" required />
 							</div>
 							<button class="btn btn-primary btn-block" type="button" id="sign"
-								onclick="login();">Sign in</button>
+								onclick="login('${ldapEnabled?c}');">Sign in</button>
+								
+							<#if (!ldapEnabled)>
 							<div style="margin-top: 10px">
 								no account? <a href="/auth/register">sign up</a>
 							</div>
+							</#if>
 							<input type="hidden" id="sig" value="${sig!}">
 							<input type="hidden" id="callback" value="${callback!}">
 						</div>

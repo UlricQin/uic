@@ -7,11 +7,13 @@ import javax.servlet.http.Cookie;
 import com.jfinal.core.Controller;
 import com.ulricqin.frame.exception.RenderJsonMsgException;
 import com.ulricqin.frame.kit.Checker;
+import com.ulricqin.frame.kit.LDAP;
 import com.ulricqin.frame.kit.StringKit;
 import com.ulricqin.uic.config.Config;
 import com.ulricqin.uic.model.Session;
 import com.ulricqin.uic.model.User;
 import com.ulricqin.uic.service.UserService;
+import com.unboundid.ldap.sdk.LDAPException;
 
 public class AuthController extends Controller {
 
@@ -82,6 +84,7 @@ public class AuthController extends Controller {
 	}
 
 	private void renderLoginPage(String appSig, String callback) {
+		setAttr("ldapEnabled", Config.ldapEnabled);
 		setAttr("sig", appSig);
 		setAttr("callback", callback);
 		setAttr("title", "sign in");
@@ -101,25 +104,58 @@ public class AuthController extends Controller {
 		String name = getPara("name", "");
 		String password = getPara("password", "");
 
-		if (StringKit.isBlank(name) || StringKit.isBlank(password)) {
-			throw new RenderJsonMsgException("name or password is blank");
+		User targetUser = null;
+
+		if (Config.ldapEnabled) {
+			if (StringKit.isBlank(name)) {
+				throw new RenderJsonMsgException("name is blank");
+			}
+
+			try {
+				boolean successfully = new LDAP().auth(name, password);
+				if (!successfully) {
+					throw new RenderJsonMsgException("name or password error");
+				}
+
+				// LDAP check successfully
+				Long id = UserService.getIdByName(name);
+				if (id == null) {
+					// no such user in database
+					targetUser = new User();
+					targetUser.set("name", name);
+					targetUser.set("passwd", "ldap");
+					if (!targetUser.save()) {
+						throw new RenderJsonMsgException("occur unknown error");
+					}
+				}
+
+				targetUser = UserService.getByName(name);
+			} catch (LDAPException e) {
+				throw new RenderJsonMsgException("LDAP ERROR: "
+						+ e.getMessage());
+			}
+		} else {
+			if (StringKit.isBlank(name) || StringKit.isBlank(password)) {
+				throw new RenderJsonMsgException("name or password is blank");
+			}
+
+			// can't use UserService.getByName(). cause the user it returned
+			// don't
+			// have password
+			targetUser = User.dao.findFirst(
+					"select id,name,passwd from user where name = ?", name);
+			if (targetUser == null) {
+				throw new RenderJsonMsgException("no such user");
+			}
+
+			if (!targetUser.getStr("passwd").equals(password)) {
+				throw new RenderJsonMsgException("password error");
+			}
 		}
 
-		// can't use UserService.getByName(). cause the user it returned don't
-		// have password
-		User u = User.dao.findFirst(
-				"select id,name,passwd from user where name = ?", name);
-		if (u == null) {
-			throw new RenderJsonMsgException("no such user");
-		}
-
-		if (!u.getStr("passwd").equals(password)) {
-			throw new RenderJsonMsgException("password error");
-		}
-
-		Cookie cookie = genCookie(u);
+		Cookie cookie = genCookie(targetUser);
 		setCookie(cookie);
-		
+
 		String appSig = getPara("sig", "");
 		String callback = getPara("callback", "");
 		if (StringKit.isNotBlank(appSig) && StringKit.isNotBlank(callback)) {
@@ -147,7 +183,11 @@ public class AuthController extends Controller {
 	}
 
 	public void registerGet() {
-		setAttr("canRegister", Config.canRegister);
+		boolean canRegister = Config.canRegister;
+		if (Config.ldapEnabled) {
+			canRegister = false;
+		}
+		setAttr("canRegister", canRegister);
 		setAttr("title", "sign up");
 		render("register.html");
 	}
@@ -156,7 +196,7 @@ public class AuthController extends Controller {
 		if (!Config.canRegister) {
 			throw new RenderJsonMsgException("registration system is not open");
 		}
-		
+
 		String name = getPara("name", "");
 		String password = getPara("password", "");
 		String repeatPassword = getPara("repeat_password", "");

@@ -5,3 +5,11 @@ devMode = false
 memcacheAddrs = 127.0.0.1:11211
 canRegister = false
 token = 3e0fij5tg8uh6
+
+ldapEnabled = true
+ldapHost = 'ldap.company.com'
+ldapBase = 'OU=x,DC=company,DC=com'
+ldapPort = 389
+ldapUid = 'sAMAccountName'
+ldapBindDn = ''
+ldapPassword = ''

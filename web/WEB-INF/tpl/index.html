@@ -30,7 +30,7 @@
 		<button type="button" class="btn btn-primary" id="update_profile" onclick="update_profile();">更新个人信息</button>
 	</div>
 </div>
-
+<#if (!ldapEnabled)>
 <div class="panel panel-warning">
 	<div class="panel-heading">
 		<h3 class="panel-title">修改密码</h3>
@@ -51,5 +51,5 @@
 		<button type="submit" class="btn btn-warning" id="change_password" onclick="change_password();">修改密码</button>
 	</div>
 </div>
-
+</#if>
 </@layout>

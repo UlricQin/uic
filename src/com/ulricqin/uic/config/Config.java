@@ -11,6 +11,7 @@ import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.ulricqin.frame.kit.LDAP;
 import com.ulricqin.frame.kit.StringKit;
 import com.ulricqin.uic.controller.AdminController;
 import com.ulricqin.uic.controller.AuthController;
@@ -33,6 +34,7 @@ public class Config extends JFinalConfig {
 	public static String maintainer = "";
 	public static boolean canRegister;
 	public static String token;
+	public static boolean ldapEnabled;
 
 	@Override
 	public void configConstant(Constants me) {
@@ -53,6 +55,11 @@ public class Config extends JFinalConfig {
 		maintainer = getProperty("maintainer");
 		canRegister = getPropertyToBoolean("canRegister", false);
 		token = getProperty("token");
+		
+		ldapEnabled = getPropertyToBoolean("ldapEnabled", false);
+		if (ldapEnabled) {
+			LDAP.initGlobalConfig(getProperty("ldapHost"), getPropertyToInt("ldapPort"), getProperty("ldapBase"), getProperty("ldapUid"), getProperty("ldapBindDn"), getProperty("ldapPassword"));
+		}
 	}
 
 	@Override

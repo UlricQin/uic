@@ -105,10 +105,14 @@ function register() {
 	});
 }
 
-function login() {
+function login(ldapEnabled) {
+	var pass = $("#password").val();
+	if (ldapEnabled == "false") {
+		pass = CryptoJS.MD5(pass).toString();
+	}
 	$.post('/auth/login', {
 		'name' : $('#name').val(),
-		'password' : CryptoJS.MD5($("#password").val()).toString(),
+		'password' : pass,
 		'sig': $("#sig").val(),
 		'callback': $("#callback").val()
 	}, function(json) {
