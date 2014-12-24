@@ -12,6 +12,7 @@ public class GlobalInterceptor implements Interceptor {
 		} catch (Exception e) {
 			// TODO: send stackTrace to maintainer(email)
 			System.out.println(">>> " + e.getMessage());
+			e.printStackTrace();
 			ai.getController().renderJson("msg", e.getMessage());
 		}
 	}
