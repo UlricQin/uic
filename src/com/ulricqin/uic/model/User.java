@@ -100,8 +100,8 @@ public class User extends Model<User> {
 			return false;
 		}
 
-		if (!(this.getInt("role") > 0 || todoUser.getLong("creator") == this
-				.getLong("id"))) {
+		if (!(this.getInt("role") > 0 || todoUser.getLong("creator").longValue() == this
+				.getLong("id").longValue())) {
 			return false;
 		}
 
