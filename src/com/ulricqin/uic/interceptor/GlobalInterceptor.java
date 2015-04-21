@@ -10,9 +10,11 @@ public class GlobalInterceptor implements Interceptor {
 		try {
 			ai.invoke();
 		} catch (Exception e) {
-			// TODO: send stackTrace to maintainer(email)
-			System.out.println(">>> " + e.getMessage());
-			e.printStackTrace();
+			if (!"name or password error".equals(e.getMessage())) {
+				// TODO: send stackTrace to maintainer(email)
+				System.out.println(">>> " + e.getMessage());
+				e.printStackTrace();
+			}
 			ai.getController().renderJson("msg", e.getMessage());
 		}
 	}
