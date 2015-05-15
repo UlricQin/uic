@@ -7,9 +7,9 @@ canRegister = false
 token =
 
 ldapEnabled = false
-ldapHost = 'ldap.company.com'
-ldapBase = 'OU=x,DC=company,DC=com'
+ldapHost = ldap.company.com
+ldapBase = OU=x,DC=company,DC=com
 ldapPort = 389
-ldapUid = 'sAMAccountName'
-ldapBindDn = ''
-ldapPassword = ''
+ldapUid = sAMAccountName
+ldapBindDn =
+ldapPassword =
